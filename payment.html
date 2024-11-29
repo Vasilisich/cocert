@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оплата</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Оплата билетов</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="tickets.html">Билеты</a></li>
+                <li><a href="payment.html">Оплата</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Подтвердите оплату</h2>
+        <p>Вы выбрали <span id="ticketCount">1</span> билет.</p>
+        <p><strong>Итого: 0.05 BTC</strong></p>
+
+        <!-- Пример интеграции с CoinGate API -->
+        <form id="paymentForm">
+            <button type="button" onclick="initiatePayment()">Оплатить криптовалютой</button>
+        </form>
+
+        <div id="paymentStatus"></div>
+
+        <script>
+            const ticketCount = new URLSearchParams(window.location.search).get('tickets') || 1;
+            document.getElementById('ticketCount').textContent = ticketCount;
+
+            function initiatePayment() {
+                // Здесь можно вызвать CoinGate API для создания платежной ссылки
+                const paymentAmount = 0.05 * ticketCount; // Примерная цена в BTC за билет
+
+                // Пример API-запроса
+                fetch('https://api.coingate.com/v2/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer YOUR_COIN_GATE_API_KEY' // Используйте свой API-ключ
+                    },
+                    body: JSON.stringify({
+                        price_amount: paymentAmount,
+                        price_currency: 'USD',
+                        pay_currency: 'BTC',
+                        order_id: '123456', // Ваш уникальный ID заказа
+                        cancel_url: 'http://your-site.com/cancel',
+                        success_url: 'http://your-site.com/success'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'created') {
+                        window.location.href = data.payment_url;
+                    } else {
+                        document.getElementById('paymentStatus').textContent = 'Ошибка при создании платежа.';
+                    }
+                })
+                .catch(err => {
+                    console.error('Ошибка:', err);
+                    document.getElementById('paymentStatus').textContent = 'Ошибка при соединении с сервером.';
+                });
+            }
+        </script>
+    </main>
+    <footer>
+        <p>&copy; 2024 Концерт. Все права защищены.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Билеты на концерт</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Концерт в Москве!</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="tickets.html">Билеты</a></li>
+                <li><a href="payment.html">Оплата</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Выберите количество билетов</h2>
+        <form action="payment.html" method="GET">
+            <label for="tickets">Количество билетов:</label>
+            <select id="tickets" name="tickets">
+                <option value="1">1 билет</option>
+                <option value="2">2 билета</option>
+                <option value="3">3 билета</option>
+                <option value="4">4 билета</option>
+            </select>
+            <button type="submit">Перейти к оплате</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Концерт. Все права защищены.</p>
+    </footer>
+</body>
+</html>
