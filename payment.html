@@ -20,52 +20,22 @@
     <main>
         <h2>Подтвердите оплату</h2>
         <p>Вы выбрали <span id="ticketCount">1</span> билет.</p>
-        <p><strong>Итого: 0.05 BTC</strong></p>
+        <p><strong>Итого: 10 USD</strong></p>
 
-        <!-- Пример интеграции с CoinGate API -->
+        <!-- Интеграция с NOWPayments -->
         <form id="paymentForm">
-            <button type="button" onclick="initiatePayment()">Оплатить криптовалютой</button>
+            <a href="https://nowpayments.io/payment-link/https://nowpayments.io/payment/?iid=4690223377" target="_blank">
+                <button type="button">Оплатить криптовалютой</button>
+            </a>
         </form>
-
-        <div id="paymentStatus"></div>
 
         <script>
             const ticketCount = new URLSearchParams(window.location.search).get('tickets') || 1;
             document.getElementById('ticketCount').textContent = ticketCount;
 
-            function initiatePayment() {
-                // Здесь можно вызвать CoinGate API для создания платежной ссылки
-                const paymentAmount = 0.05 * ticketCount; // Примерная цена в BTC за билет
-
-                // Пример API-запроса
-                fetch('https://api.coingate.com/v2/orders', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer YOUR_COIN_GATE_API_KEY' // Используйте свой API-ключ
-                    },
-                    body: JSON.stringify({
-                        price_amount: paymentAmount,
-                        price_currency: 'USD',
-                        pay_currency: 'BTC',
-                        order_id: '123456', // Ваш уникальный ID заказа
-                        cancel_url: 'http://your-site.com/cancel',
-                        success_url: 'http://your-site.com/success'
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'created') {
-                        window.location.href = data.payment_url;
-                    } else {
-                        document.getElementById('paymentStatus').textContent = 'Ошибка при создании платежа.';
-                    }
-                })
-                .catch(err => {
-                    console.error('Ошибка:', err);
-                    document.getElementById('paymentStatus').textContent = 'Ошибка при соединении с сервером.';
-                });
-            }
+            // Вы можете адаптировать сумму оплаты в зависимости от количества билетов.
+            const paymentAmount = 10 * ticketCount; // Примерная цена в USD за билет
+            document.querySelector('strong').textContent = `Итого: ${paymentAmount} USD`;
         </script>
     </main>
     <footer>
